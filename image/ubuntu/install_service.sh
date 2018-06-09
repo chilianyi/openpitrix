@@ -1,9 +1,9 @@
-#!/bin/bash
+#!/bin/bash -e
 
 FILE_NAME="$1"
 
 chmod +x opt/openpitrix/sbin/*
-for i in 0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19;
+for i in $(seq 1 100)
 do
   opt/openpitrix/sbin/install_docker.sh && break || sleep 3
 done
