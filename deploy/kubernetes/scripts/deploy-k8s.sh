@@ -93,3 +93,5 @@ if [ "${METADATA}" == "1" ];then
 fi
 
 echo "Deployed successfully"
+
+
