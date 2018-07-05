@@ -4,13 +4,10 @@
 
 build:
 	cd .. && docker build -t openpitrix/openpitrix:metadata -f ./Dockerfile.metadata .
+	docker images openpitrix/openpitrix:metadata
 
 pull:
 	docker pull openpitrix/openpitrix:metadata
-
-pilot:
-	docker run --rm -it openpitrix/openpitrix:metadata \
-		pilot -config=/opt/openpitrix/conf/pilot.json serve
 
 frontgate:
 	docker run --rm -it openpitrix/openpitrix:metadata \
@@ -21,7 +18,6 @@ drone:
 		drone -config=/opt/openpitrix/conf/drone.json serve
 
 run-help:
-	docker run --rm -it openpitrix/openpitrix:metadata pilot -h
 	docker run --rm -it openpitrix/openpitrix:metadata frontgate -h
 	docker run --rm -it openpitrix/openpitrix:metadata drone -h
 

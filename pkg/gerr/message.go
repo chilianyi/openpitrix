@@ -165,4 +165,12 @@ var (
 		Name: "resource_quota_not_enough",
 		En:   "resource quota not enough: %s",
 	}
+	ErrorHelmReleaseExists = ErrorMessage{
+		Name: "helm_release_exists",
+		En:   "helm release [%s] already exists",
+	}
+	ErrorUnsupportedApiVersion = ErrorMessage{
+		Name: "unsupported_api_version",
+		En:   "unsupported api version [%s]",
+	}
 )
