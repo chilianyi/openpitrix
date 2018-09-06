@@ -2830,6 +2830,9 @@ var Files = map[string]string{
           "type": "string",
           "format": "byte"
         },
+        "app_id": {
+          "type": "string"
+        },
         "version_id": {
           "type": "string"
         }
@@ -3695,9 +3698,6 @@ var Files = map[string]string{
       "type": "object",
       "properties": {
         "cluster_id": {
-          "type": "string"
-        },
-        "role": {
           "type": "string"
         },
         "node_id": {

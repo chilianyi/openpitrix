@@ -1168,7 +1168,6 @@ func (c *DeleteClusterNodesCmd) ParseFlag(f Flag) {
 	f.StringSliceVarP(&c.AdvancedParam, "advanced_param", "", []string{}, "")
 	f.StringVarP(&c.ClusterID, "cluster_id", "", "", "")
 	f.StringSliceVarP(&c.NodeID, "node_id", "", []string{}, "")
-	f.StringVarP(&c.Role, "role", "", "", "")
 }
 
 func (c *DeleteClusterNodesCmd) Run(out Out) error {
