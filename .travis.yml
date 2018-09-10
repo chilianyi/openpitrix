@@ -14,8 +14,6 @@ before_install:
 - sudo apt-get -y install docker-ce
 before_script:
 - docker --version
-script:
-- make ci-test
 before_deploy:
 - make clean
 - make release-openpitrix-$TRAVIS_TAG
