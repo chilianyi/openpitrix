@@ -231,3 +231,4 @@ push-image-%: ## push docker image
 	docker push openpitrix/openpitrix:metadata-$*; \
 	docker push openpitrix/openpitrix:flyway-$*; \
 	fi
+
