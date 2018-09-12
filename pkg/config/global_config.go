@@ -14,6 +14,8 @@ import (
 	"openpitrix.io/openpitrix/pkg/util/yamlutil"
 )
 
+var SupportedProviders = make(map[string]interface{})
+
 type GlobalConfig struct {
 	App     AppServiceConfig       `json:"app"`
 	Repo    RepoServiceConfig      `json:"repo"`
@@ -56,8 +58,16 @@ func (g *GlobalConfig) GetAppDefaultStatus() string {
 	return constants.StatusActive
 }
 
-func (g *GlobalConfig) GetFrontgateAutoDelete() bool {
-	return g.Cluster.FrontgateAutoDelete
+func (g *GlobalConfig) GetAvaliblePlugins() []string {
+	if len(g.Cluster.Plugins) != 0 {
+		return g.Cluster.Plugins
+	} else {
+		var providers []string
+		for provider := range SupportedProviders {
+			providers = append(providers, provider)
+		}
+		return providers
+	}
 }
 
 func (g *GlobalConfig) GetRuntimeImageIdAndUrl(apiServer, zone string) (*ImageConfig, error) {
