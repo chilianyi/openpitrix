@@ -65,7 +65,6 @@ func (c *Controller) IsRunningExceed() bool {
 }
 
 func (c *Controller) UpdateWorkingJobs(ctx context.Context) error {
-https: //github.com/grpc-ecosystem/grpc-gateway
 	//TODO: retry the job
 	_, err := pi.Global().DB(ctx).
 		Update(constants.TableJob).
