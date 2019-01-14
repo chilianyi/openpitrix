@@ -10,6 +10,9 @@ import (
 	"github.com/fatih/structs"
 	"github.com/golang/protobuf/ptypes/wrappers"
 
+	"strings"
+
+	"openpitrix.io/openpitrix/pkg/constants"
 	"openpitrix.io/openpitrix/pkg/gerr"
 	"openpitrix.io/openpitrix/pkg/util/ctxutil"
 	"openpitrix.io/openpitrix/pkg/util/stringutil"
@@ -134,6 +137,31 @@ func (c *checker) checkRole(_ string, _ interface{}) error {
 	return gerr.New(c.ctx, gerr.PermissionDenied, gerr.ErrorPermissionDenied)
 }
 
+func (c *checker) checkOwnerPath(param string, value interface{}) error {
+	if param != constants.ColumnOwnerPath {
+		return nil
+	}
+
+	s := ctxutil.GetSender(c.ctx)
+	switch v := value.(type) {
+	case string:
+		if !s.AccessPath.CheckOwnerPathPermission(v) {
+			return gerr.New(c.ctx, gerr.InvalidArgument, gerr.ErrorUnsupportedParameterValue, param, v)
+		}
+	case *wrappers.StringValue:
+		if v != nil {
+			if !s.AccessPath.CheckOwnerPathPermission(v.GetValue()) {
+				return gerr.New(c.ctx, gerr.InvalidArgument, gerr.ErrorUnsupportedParameterValue, param, v.GetValue())
+			}
+		}
+	case []string:
+		if !s.AccessPath.CheckOwnerPathPermission(v...) {
+			return gerr.New(c.ctx, gerr.InvalidArgument, gerr.ErrorUnsupportedParameterValue, param, strings.Join(v, ","))
+		}
+	}
+	return nil
+}
+
 func (c *checker) Exec() error {
 	for _, field := range structs.Fields(c.req) {
 		param := getFieldName(field)
@@ -143,6 +171,7 @@ func (c *checker) Exec() error {
 			c.checkRole,
 			c.checkRequired,
 			c.checkStringChosen,
+			c.checkOwnerPath,
 		)
 		if err != nil {
 			return err

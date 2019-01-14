@@ -47,7 +47,7 @@ func (p *Server) DescribeRepos(ctx context.Context, req *pb.DescribeReposRequest
 		From(constants.TableRepo).
 		Offset(offset).
 		Limit(limit).
-		Where(manager.BuildOwnerPathFilter(ctx)).
+		Where(manager.BuildOwnerPathFilter(ctx, req.GetOwnerPath()...)).
 		Where(manager.BuildFilterConditionsWithPrefix(req, constants.TableRepo))
 
 	if len(req.UserId) > 0 {

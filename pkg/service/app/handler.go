@@ -91,7 +91,7 @@ func (p *Server) describeApps(ctx context.Context, req *pb.DescribeAppsRequest, 
 		Offset(offset).
 		Limit(limit).
 		Where(manager.BuildFilterConditions(req, constants.TableApp)).
-		Where(manager.BuildOwnerPathFilter(ctx)).
+		Where(manager.BuildOwnerPathFilter(ctx, req.GetOwnerPath()...)).
 		Where(db.Eq(constants.ColumnActive, active))
 
 	if len(categoryIds) > 0 {
@@ -555,7 +555,7 @@ func (p *Server) describeAppVersions(ctx context.Context, req *pb.DescribeAppVer
 		From(constants.TableAppVersion).
 		Offset(offset).
 		Limit(limit).
-		Where(manager.BuildOwnerPathFilter(ctx)).
+		Where(manager.BuildOwnerPathFilter(ctx, req.GetOwnerPath()...)).
 		Where(manager.BuildFilterConditions(req, constants.TableAppVersion)).
 		Where(db.Eq(constants.ColumnActive, active))
 

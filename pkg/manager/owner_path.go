@@ -6,7 +6,6 @@ package manager
 
 import (
 	"context"
-	"fmt"
 
 	"github.com/gocraft/dbr"
 
@@ -15,14 +14,20 @@ import (
 	"openpitrix.io/openpitrix/pkg/util/ctxutil"
 )
 
-func BuildOwnerPathFilter(ctx context.Context, prefix ...string) dbr.Builder {
+func BuildOwnerPathFilter(ctx context.Context, ownerPaths ...string) dbr.Builder {
 	s := ctxutil.GetSender(ctx)
 	if s == nil {
 		return nil
 	}
-	var column = constants.ColumnOwnerPath
-	if len(prefix) > 0 {
-		column = fmt.Sprintf("%s.%s", prefix[0], column)
+	accessPath := string(s.GetAccessPath())
+
+	if len(ownerPaths) == 0 {
+		return db.Prefix(constants.ColumnOwnerPath, accessPath)
+	} else {
+		var ops []dbr.Builder
+		for _, ownerPath := range ownerPaths {
+			ops = append(ops, db.Prefix(constants.ColumnOwnerPath, ownerPath))
+		}
+		return db.Or(ops...)
 	}
-	return db.Prefix(column, string(s.GetAccessPath()))
 }
