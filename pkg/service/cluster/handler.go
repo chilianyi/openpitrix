@@ -15,6 +15,7 @@ import (
 
 	appclient "openpitrix.io/openpitrix/pkg/client/app"
 	jobclient "openpitrix.io/openpitrix/pkg/client/job"
+	nfclient "openpitrix.io/openpitrix/pkg/client/notification"
 	runtimeclient "openpitrix.io/openpitrix/pkg/client/runtime"
 	providerclient "openpitrix.io/openpitrix/pkg/client/runtime_provider"
 	"openpitrix.io/openpitrix/pkg/constants"
@@ -1544,6 +1545,19 @@ func (p *Server) describeClusters(ctx context.Context, req *pb.DescribeClustersR
 			}
 		}
 		pbClusters = append(pbClusters, pbClusterWrapper)
+	}
+
+	// notify
+	nfClient, err := nfclient.NewClient()
+	err = nfClient.SendEmailNotification(
+		ctx,
+		constants.InviteIsvNotifyTitle.GetDefaultMessage(),
+		constants.InviteIsvNotifyContent.GetDefaultMessage("stark"),
+		"op",
+		[]string{"chilianyi@126.com"},
+	)
+	if err != nil {
+		return nil, err
 	}
 
 	res := &pb.DescribeClustersResponse{
