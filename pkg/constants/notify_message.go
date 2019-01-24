@@ -18,9 +18,9 @@ func (n *NotifyMessage) GetMessage(locale string, params ...interface{}) string 
 	case en:
 		return fmt.Sprintf(n.en, params...)
 	case zhCN:
-		return fmt.Sprintf(n.zhCN, params)
+		return fmt.Sprintf(n.zhCN, params...)
 	default:
-		return fmt.Sprintf(n.zhCN, params)
+		return fmt.Sprintf(n.zhCN, params...)
 	}
 }
 
